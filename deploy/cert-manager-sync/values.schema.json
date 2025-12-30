@@ -1,15 +1,14 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "additionalProperties": false,
+  "additionalProperties": true,
   "properties": {
     "affinity": {
-      "additionalProperties": false,
-      "required": [],
+      "additionalProperties": true,
       "title": "affinity",
       "type": "object"
     },
     "autoscaling": {
-      "additionalProperties": false,
+      "additionalProperties": true,
       "properties": {
         "enabled": {
           "default": false,
@@ -32,23 +31,15 @@
           "type": "integer"
         },
         "targetMemoryUtilizationPercentage": {
-          "default": "",
           "title": "targetMemoryUtilizationPercentage",
-          "type": "string"
+          "type": "integer"
         }
       },
-      "required": [
-        "enabled",
-        "minReplicas",
-        "maxReplicas",
-        "targetCPUUtilizationPercentage",
-        "targetMemoryUtilizationPercentage"
-      ],
       "title": "autoscaling",
       "type": "object"
     },
     "clusterRole": {
-      "additionalProperties": false,
+      "additionalProperties": true,
       "properties": {
         "create": {
           "default": true,
@@ -56,14 +47,11 @@
           "type": "boolean"
         }
       },
-      "required": [
-        "create"
-      ],
       "title": "clusterRole",
       "type": "object"
     },
     "config": {
-      "additionalProperties": false,
+      "additionalProperties": true,
       "properties": {
         "disableCache": {
           "default": "false",
@@ -101,22 +89,14 @@
           "type": "string"
         }
       },
-      "required": [
-        "operatorName",
-        "secretsNamespace",
-        "disabledNamespaces",
-        "enabledNamespaces",
-        "logLevel",
-        "logFormat",
-        "disableCache"
-      ],
       "title": "config",
       "type": "object"
     },
     "env": {
       "description": "additional env vars to be passed to the container",
       "items": {
-        "required": []
+        "additionalProperties": true,
+        "type": "object"
       },
       "title": "env",
       "type": "array"
@@ -128,12 +108,12 @@
     },
     "global": {
       "description": "Global values are values that can be accessed from any chart or subchart by exactly the same name.",
-      "required": [],
+      "additionalProperties": true,
       "title": "global",
       "type": "object"
     },
     "image": {
-      "additionalProperties": false,
+      "additionalProperties": true,
       "properties": {
         "pullPolicy": {
           "default": "IfNotPresent",
@@ -152,29 +132,24 @@
           "type": "string"
         }
       },
-      "required": [
-        "repository",
-        "pullPolicy",
-        "tag"
-      ],
       "title": "image",
       "type": "object"
     },
     "imagePullSecrets": {
       "items": {
-        "required": []
+        "additionalProperties": true,
+        "type": "object"
       },
       "title": "imagePullSecrets",
       "type": "array"
     },
     "labels": {
-      "additionalProperties": false,
-      "required": [],
+      "additionalProperties": true,
       "title": "labels",
       "type": "object"
     },
     "metrics": {
-      "additionalProperties": false,
+      "additionalProperties": true,
       "properties": {
         "enabled": {
           "default": false,
@@ -187,10 +162,6 @@
           "type": "integer"
         }
       },
-      "required": [
-        "enabled",
-        "port"
-      ],
       "title": "metrics",
       "type": "object"
     },
@@ -200,19 +171,17 @@
       "type": "string"
     },
     "nodeSelector": {
-      "additionalProperties": false,
-      "required": [],
+      "additionalProperties": true,
       "title": "nodeSelector",
       "type": "object"
     },
     "podAnnotations": {
-      "additionalProperties": false,
-      "required": [],
+      "additionalProperties": true,
       "title": "podAnnotations",
       "type": "object"
     },
     "podDisruptionBudget": {
-      "additionalProperties": false,
+      "additionalProperties": true,
       "description": "Pod Disruption Budget configuration",
       "properties": {
         "enabled": {
@@ -234,17 +203,11 @@
           "type": "integer"
         }
       },
-      "required": [
-        "enabled",
-        "minAvailable",
-        "maxUnavailable"
-      ],
       "title": "podDisruptionBudget",
       "type": "object"
     },
     "podSecurityContext": {
-      "additionalProperties": false,
-      "required": [],
+      "additionalProperties": true,
       "title": "podSecurityContext",
       "type": "object"
     },
@@ -260,24 +223,21 @@
       "type": "integer"
     },
     "resources": {
-      "additionalProperties": false,
-      "required": [],
+      "additionalProperties": true,
       "title": "resources",
       "type": "object"
     },
     "securityContext": {
-      "additionalProperties": false,
-      "required": [],
+      "additionalProperties": true,
       "title": "securityContext",
       "type": "object"
     },
     "serviceAccount": {
-      "additionalProperties": false,
+      "additionalProperties": true,
       "properties": {
         "annotations": {
-          "additionalProperties": false,
+          "additionalProperties": true,
           "description": "Annotations to add to the service account",
-          "required": [],
           "title": "annotations",
           "type": "object"
         },
@@ -294,17 +254,13 @@
           "type": "string"
         }
       },
-      "required": [
-        "create",
-        "annotations",
-        "name"
-      ],
       "title": "serviceAccount",
       "type": "object"
     },
     "tolerations": {
       "items": {
-        "required": []
+        "additionalProperties": true,
+        "type": "object"
       },
       "title": "tolerations",
       "type": "array"
@@ -312,35 +268,12 @@
     "topologySpreadConstraints": {
       "description": "Topology spread constraints for pod distribution",
       "items": {
-        "required": []
+        "additionalProperties": true,
+        "type": "object"
       },
       "title": "topologySpreadConstraints",
       "type": "array"
     }
   },
-  "required": [
-    "labels",
-    "replicaCount",
-    "image",
-    "imagePullSecrets",
-    "nameOverride",
-    "fullnameOverride",
-    "config",
-    "metrics",
-    "serviceAccount",
-    "clusterRole",
-    "podAnnotations",
-    "priorityClassName",
-    "podSecurityContext",
-    "securityContext",
-    "resources",
-    "env",
-    "autoscaling",
-    "podDisruptionBudget",
-    "nodeSelector",
-    "tolerations",
-    "topologySpreadConstraints",
-    "affinity"
-  ],
   "type": "object"
 }
