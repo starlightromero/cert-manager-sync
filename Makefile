@@ -1,4 +1,16 @@
 
+# Makefile for cert-manager-sync
+#
+# Available targets:
+#   test                           - Run Go tests and vulnerability checks
+#   helm-docs                      - Generate Helm chart documentation
+#   helm-docs-check                - Check if Helm chart documentation is up to date
+#   helm-validate-template         - Validate Helm chart templates with kubeconform
+#   helm-validate-schema           - Validate Helm chart values against JSON schema
+#   helm-validate-custom-values    - Validate custom values file (requires VALUES_FILE)
+#   helm-validate-all              - Run comprehensive Helm chart validation
+#   helm-update-schema             - Update values.schema.json from values.yaml
+
 .PHONY: test
 test:
 	@echo "Running tests..."
@@ -45,6 +57,13 @@ helm-validate-custom-values:
 	@echo "Validating generated templates..."
 	@helm template cert-manager-sync ./deploy/cert-manager-sync --values $(VALUES_FILE) | kubeconform -strict -verbose
 	@echo "Custom values validation passed!"
+
+.PHONY: helm-update-schema
+helm-update-schema:
+	@echo "Updating Helm chart values schema..."
+	@command -v helm-schema >/dev/null 2>&1 || { echo "helm-schema is required but not installed. Install it with: go install github.com/dadav/helm-schema/cmd/helm-schema@latest"; exit 1; }
+	@helm-schema -c deploy -f values.yaml -o values.schema.json
+	@echo "Schema updated successfully at deploy/cert-manager-sync/values.schema.json"
 
 .PHONY: helm-validate-all
 helm-validate-all: helm-validate-template helm-validate-schema
