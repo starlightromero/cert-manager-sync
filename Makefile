@@ -9,7 +9,7 @@
 #   helm-validate-schema           - Validate Helm chart values against JSON schema
 #   helm-validate-custom-values    - Validate custom values file (requires VALUES_FILE)
 #   helm-validate-all              - Run comprehensive Helm chart validation
-#   helm-update-schema             - Update values.schema.json from values.yaml
+#   helm-update-schema             - Generate and fix values.schema.json from values.yaml
 
 .PHONY: test
 test:
@@ -60,9 +60,10 @@ helm-validate-custom-values:
 
 .PHONY: helm-update-schema
 helm-update-schema:
-	@echo "Updating Helm chart values schema..."
-	@command -v helm-schema >/dev/null 2>&1 || { echo "helm-schema is required but not installed. Install it with: go install github.com/dadav/helm-schema/cmd/helm-schema@latest"; exit 1; }
-	@helm-schema -c deploy -f values.yaml -o values.schema.json
+	@echo "Generating Helm chart values schema..."
+	@command -v helm >/dev/null 2>&1 || { echo "helm is required but not installed. Please install Helm."; exit 1; }
+	@helm plugin list | grep -q "schema" || { echo "Installing helm-values-schema-json plugin..."; helm plugin install https://github.com/losisin/helm-values-schema-json; }
+	@cd deploy/cert-manager-sync && helm schema -f values.yaml -o values.schema.json
 	@echo "Schema updated successfully at deploy/cert-manager-sync/values.schema.json"
 
 .PHONY: helm-validate-all
